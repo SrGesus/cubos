@@ -1,12 +1,7 @@
 #pragma once
 
 #include <cubos/core/ecs/reflection.hpp>
-#include <cubos/core/reflection/external/glm.hpp>
 #include <cubos/core/reflection/external/primitives.hpp>
-#include <cubos/core/reflection/external/string.hpp>
-
-#include <cubos/engine/assets/plugin.hpp>
-#include <cubos/engine/transform/plugin.hpp>
 
 #include <cubos/engine/prelude.hpp>
 

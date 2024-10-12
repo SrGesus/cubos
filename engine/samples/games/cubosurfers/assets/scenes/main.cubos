@@ -1,5 +1,8 @@
 {
     "entities": {
+        "score": {
+            "Score": 0.0
+        },
         "render-target": {
             "cubos::engine::RenderTargetDefaults": {},
             "cubos::engine::GizmosTarget": {}

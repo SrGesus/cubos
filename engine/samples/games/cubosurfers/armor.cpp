@@ -53,7 +53,6 @@ void armorPlugin(Cubos& cubos)
                 CUBOS_INFO("Armored player collision!");
                 cmds.destroy(obstacleEntity);
                 cmds.remove<Armor>(playerEntity);
-                CUBOS_INFO("Armored player collision 2!");
             }
         });
 }

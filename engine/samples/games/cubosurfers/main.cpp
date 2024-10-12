@@ -21,6 +21,7 @@
 #include "spawner.hpp"
 #include "jetpack.hpp"
 #include "armor.hpp"
+#include "score.hpp"
 
 using namespace cubos::engine;
 
@@ -34,7 +35,7 @@ int main(int argc, char** argv)
 
     cubos.plugin(defaultsPlugin);
     cubos.plugin(freeCameraPlugin);
-    cubos.plugin(toolsPlugin);
+    // cubos.plugin(toolsPlugin);
 
     cubos.plugin(playerPlugin);
     cubos.plugin(spawnerPlugin);
@@ -42,6 +43,7 @@ int main(int argc, char** argv)
     cubos.plugin(powerupPlugin);
     cubos.plugin(jetpackPlugin);
     cubos.plugin(armorPlugin);
+    cubos.plugin(scorePlugin);
 
     cubos.startupSystem("configure settings").tagged(settingsTag).call([](Settings& settings) {
         settings.setString("assets.io.path", SAMPLE_ASSETS_FOLDER);
@@ -81,9 +83,16 @@ int main(int argc, char** argv)
         .with<Player>()
         .without<Armor>()
         .without<Jetpack>()
-        .call([](Commands cmds, DeltaTime& dt, const Assets& assets, Query<const Player&, const CollidingWith&, const Obstacle&> collisions, Query<Entity> all) {
+        .call([](Commands cmds, Settings& settings, DeltaTime& dt, const Assets& assets, Query<const Player&, const CollidingWith&, const Obstacle&> collisions, Query<Entity> all, Query<Score&> scores) {
             for (auto [player, collidingWith, obstacle] : collisions)
             {
+                for (auto [score] : scores) {
+                    if (score.score > score.highscore) {
+                        CUBOS_INFO("Big score");
+                        score.highscore = score.score;
+                        settings.setInteger("highscore", score.highscore);
+                    }
+                }
                 CUBOS_INFO("Unarmored player collision!");
                 for (auto [ent] : all)
                 {
@@ -95,6 +104,8 @@ int main(int argc, char** argv)
             }
         });
 
+
+    // Asset observers
     cubos.observer("add jetpack asset")
         .onAdd<Jetpack>()
         .without<Armor>()
@@ -106,7 +117,6 @@ int main(int argc, char** argv)
                 cmds.add(playerEntity, LoadRenderVoxels{});
             } 
         });
-
     cubos.observer("add jetpack armor asset")
         .onAdd<Jetpack>()
         .with<Armor>()
@@ -118,8 +128,6 @@ int main(int argc, char** argv)
                 cmds.add(playerEntity, LoadRenderVoxels{});
             } 
         });
-
-
     cubos.observer("remove jetpack asset")
         .onRemove<Jetpack>()
         .without<Armor>()
@@ -131,7 +139,6 @@ int main(int argc, char** argv)
                 cmds.add(playerEntity, LoadRenderVoxels{});
             } 
         });
-
     cubos.observer("remove jetpack armor asset")
         .onRemove<Jetpack>()
         .with<Armor>()
@@ -143,7 +150,6 @@ int main(int argc, char** argv)
                 cmds.add(playerEntity, LoadRenderVoxels{});
             } 
         });
-
     cubos.observer("add armor asset")
         .onAdd<Armor>()
         .call([](Commands cmds, Query<Entity, const Player&, RenderVoxelGrid&> players) {
@@ -154,18 +160,14 @@ int main(int argc, char** argv)
                 cmds.add(playerEntity, LoadRenderVoxels{});
             } 
         });
-
     cubos.observer("remove armor asset")
         .onRemove<Armor>()
         .call([](Commands cmds, Query<Entity, const Player&, RenderVoxelGrid&> players) {
             for (auto [playerEntity, player, grid] : players)
             {
-                CUBOS_INFO("Removing armor asset...");
-                grid.asset = AnyAsset("4892c2f3-10b3-4ca7-9de3-822b77a0ba7e");
+                grid.asset = AnyAsset("57d1b886-8543-4b8b-8f78-d911e9c4f896");
                 cmds.add(playerEntity, LoadRenderVoxels{});
-                CUBOS_INFO("Removing armor asset2...");
             } 
-            CUBOS_INFO("Removing armor asset3...");
             (void)cmds;
         });
 
