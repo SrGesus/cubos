@@ -806,13 +806,6 @@ auto World::Components::remove(const reflection::Type& type) -> Components&
         return *this;
     }
 
-    // Trigger any observers that are interested in this change.
-    CommandBuffer cmdBuffer{mWorld};
-    if (mWorld.mObservers->notifyRemove(cmdBuffer, mEntity, columnId))
-    {
-        cmdBuffer.commit();
-    }
-
     auto& oldTable = mWorld.mTables.dense().at(oldArchetype);
 
     // Otherwise, we'll need to move the entity to a new archetype.
@@ -827,6 +820,13 @@ auto World::Components::remove(const reflection::Type& type) -> Components&
 
     // Move sparse data to the new tables.
     mWorld.moveSparse(mEntity, oldArchetype, newArchetype);
+
+    // Trigger any observers that are interested in this change.
+    CommandBuffer cmdBuffer{mWorld};
+    if (mWorld.mObservers->notifyRemove(cmdBuffer, mEntity, columnId))
+    {
+        cmdBuffer.commit();
+    }
 
     CUBOS_TRACE("Removed component {} from entity {}", type.name(), mEntity);
     return *this;
