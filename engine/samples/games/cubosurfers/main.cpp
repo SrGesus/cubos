@@ -162,10 +162,11 @@ int main(int argc, char** argv)
             {
                 CUBOS_INFO("Removing armor asset...");
                 grid.asset = AnyAsset("4892c2f3-10b3-4ca7-9de3-822b77a0ba7e");
-                // cmds.add(playerEntity, LoadRenderVoxels{});
-                (void)player;
+                cmds.add(playerEntity, LoadRenderVoxels{});
+                CUBOS_INFO("Removing armor asset2...");
             } 
-            (void )cmds;
+            CUBOS_INFO("Removing armor asset3...");
+            (void)cmds;
         });
 
     cubos.run();
