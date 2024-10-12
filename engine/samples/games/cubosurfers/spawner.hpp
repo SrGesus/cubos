@@ -8,7 +8,9 @@ struct Spawner
 {
     CUBOS_REFLECT;
 
-    cubos::engine::Asset<cubos::engine::Scene> scene; // Scene which will be spawned
+    cubos::engine::Asset<cubos::engine::Scene> scene1; // Scene which will be spawned
+    cubos::engine::Asset<cubos::engine::Scene> scene2; // Scene which will be spawned
+    cubos::engine::Asset<cubos::engine::Scene> scene3; // Scene which will be spawned
     std::string sceneRoot;                            // Root entity of the scene
     float period{1.0F};                               // Time between spawns in seconds
     float laneWidth{1.0F};                            // Width of the lane

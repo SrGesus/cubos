@@ -134,7 +134,7 @@ void QueryFilter::update()
 
     // Update the pin masks with which each node will run.
     mNodePins[0] = 0;
-    for (int i = 1; i < mNodeCount; ++i)
+    for (int i = 1; i < mNodeCount && i < QueryNode::MaxCursorCount; ++i)
     {
         mNodePins[i] = mNodePins[i - 1] | mNodes[i - 1]->pins();
     }

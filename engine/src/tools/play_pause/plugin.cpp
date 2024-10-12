@@ -11,6 +11,7 @@ namespace
         CUBOS_ANONYMOUS_REFLECT(State);
 
         bool paused{false};
+        bool pinned{false};
         float scale{1.0F};
     };
 } // namespace
@@ -26,6 +27,10 @@ void cubos::engine::playPauseToolPlugin(Cubos& cubos)
         if (!toolbox.isOpen("Play Pause"))
         {
             return;
+        }
+        
+        if (!state.pinned && !state.paused) {
+            state.scale = dt.scale;
         }
 
         if (ImGui::Begin("Play Pause"))
@@ -54,9 +59,16 @@ void cubos::engine::playPauseToolPlugin(Cubos& cubos)
             {
                 state.scale = 1.0F;
             }
+            
+            ImGui::SameLine();
 
-            ImGui::End();
+            if (ImGui::Button("Pin"))
+            {
+                state.pinned = !state.pinned;
+            }
+
         }
+        ImGui::End();
 
         if (!state.paused)
         {

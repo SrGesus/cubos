@@ -12,7 +12,9 @@ using namespace cubos::engine;
 CUBOS_REFLECT_IMPL(Spawner)
 {
     return cubos::core::ecs::TypeBuilder<Spawner>("Spawner")
-        .withField("scene", &Spawner::scene)
+        .withField("scene1", &Spawner::scene1)
+        .withField("scene2", &Spawner::scene2)
+        .withField("scene3", &Spawner::scene3)
         .withField("sceneRoot", &Spawner::sceneRoot)
         .withField("period", &Spawner::period)
         .withField("laneWidth", &Spawner::laneWidth)
@@ -40,7 +42,14 @@ void spawnerPlugin(Cubos& cubos)
                     int offset = (rand() % 3) - 1;
                     spawnPosition.vec.x += static_cast<float>(offset) * spawner.laneWidth;
 
-                    commands.spawn(assets.read(spawner.scene)->blueprint).add(spawner.sceneRoot, spawnPosition);
+                    int scene = (rand() % 100);
+                    if (scene < 85) {
+                        commands.spawn(assets.read(spawner.scene1)->blueprint).add(spawner.sceneRoot, spawnPosition);
+                    } else if (scene < 95) {
+                        commands.spawn(assets.read(spawner.scene2)->blueprint).add(spawner.sceneRoot, spawnPosition);
+                    } else {
+                        commands.spawn(assets.read(spawner.scene3)->blueprint).add(spawner.sceneRoot, spawnPosition);
+                    }
                 }
             }
         });

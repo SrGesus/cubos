@@ -26,8 +26,8 @@ void obstaclePlugin(Cubos& cubos)
     cubos.component<Obstacle>();
 
     cubos.system("move obstacles")
-        .call([](Commands cmds, const DeltaTime& dt, Query<Entity, const Obstacle&, Position&> obstacles) {
-            for (auto [ent, obstacle, position] : obstacles)
+        .call([](Commands cmds, const DeltaTime& dt, Query<Entity, const Obstacle&, Position&, Rotation&> obstacles) {
+            for (auto [ent, obstacle, position, rotation] : obstacles)
             {
                 position.vec += obstacle.velocity * dt.value();
                 position.vec.y = glm::abs(glm::sin(position.vec.z * 0.15F)) * 1.5F;

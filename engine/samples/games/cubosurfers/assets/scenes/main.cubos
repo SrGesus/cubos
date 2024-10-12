@@ -63,14 +63,16 @@
             },
             "cubos::engine::Scale": 2
         },
-        "obstacle-spawner": {
+        "zombie-spawner": {
             "cubos::engine::Position": {
                 "x": 0,
                 "y": 0,
                 "z": 300
             },
             "Spawner": {
-                "scene": "b15272c5-08c9-47f5-9b24-1192332580a8",
+                "scene1": "b15272c5-08c9-47f5-9b24-1192332580a8",
+                "scene2": "b15272c5-08c9-47f5-9b24-1192332580a9",
+                "scene3": "b15272c5-08c9-47f5-9b24-1192332580aa",
                 "sceneRoot": "base",
                 "period": 1.0,
                 "laneWidth": 9

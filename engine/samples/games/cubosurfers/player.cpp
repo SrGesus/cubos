@@ -23,6 +23,7 @@ void playerPlugin(Cubos& cubos)
 
     cubos.component<Player>();
 
+
     cubos.system("move player").call([](Input& input, const DeltaTime& dt, Query<Player&, Position&> players) {
         for (auto [player, position] : players)
         {
@@ -41,9 +42,13 @@ void playerPlugin(Cubos& cubos)
                 auto sourceX = static_cast<float>(-player.lane) * player.laneWidth;
                 auto targetX = static_cast<float>(-player.targetLane) * player.laneWidth;
                 float currentT = (position.vec.x - sourceX) / (targetX - sourceX);
-                float newT = glm::min(1.0F, currentT + dt.value() * player.speed);
+                float newT = glm::min(1.0F, currentT + dt.unscaledValue * player.speed);
                 position.vec.x = glm::mix(sourceX, targetX, newT);
-                position.vec.y = glm::sin(currentT * glm::pi<float>()) * 2.0F;
+
+                // If player is on the ground jump between lanes
+                if (player.y == 0) {
+                    position.vec.y = glm::sin(currentT * glm::pi<float>()) * 2.0F;
+                }
 
                 if (newT == 1.0F)
                 {
@@ -52,7 +57,7 @@ void playerPlugin(Cubos& cubos)
             }
             else
             {
-                position.vec.y = 0;
+                position.vec.y = player.y;
             }
         }
     });
